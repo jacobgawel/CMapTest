@@ -18,7 +18,7 @@ public class IndexModel(IUserService userService) : PageModel
 
     public async Task OnGetAsync()
     {
-        var result = await userService.GetAllAsync(PageNumber, 20);
+        var result = await userService.GetAllAsync(PageNumber, WebConstants.DefaultPageSize);
         if (result.IsSuccess)
             Users = result.Value;
     }

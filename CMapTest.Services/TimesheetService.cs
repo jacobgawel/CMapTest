@@ -13,7 +13,8 @@ namespace CMapTest.Services;
 public class TimesheetService(
     ITimesheetRepository timesheetRepository,
     IUserRepository userRepository,
-    IProjectRepository projectRepository) : ITimesheetService
+    IProjectRepository projectRepository,
+    TimeProvider timeProvider) : ITimesheetService
 {
     public async Task<Result<PaginatedResponse<TimesheetResponse>>> GetAllAsync(int page, int pageSize)
     {
@@ -144,7 +145,7 @@ public class TimesheetService(
         if (endTime <= startTime)
             return Result.Fail<TimesheetResponse>(new ValidationError("End time must be after start time"));
 
-        if (date > DateOnly.FromDateTime(DateTime.UtcNow))
+        if (date > DateOnly.FromDateTime(timeProvider.GetUtcNow().UtcDateTime))
             return Result.Fail<TimesheetResponse>(new ValidationError("Date cannot be in the future"));
 
         var user = await userRepository.GetByIdAsync(userId);

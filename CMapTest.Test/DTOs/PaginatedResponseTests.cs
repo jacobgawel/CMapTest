@@ -88,4 +88,21 @@ public class PaginatedResponseTests
 
         response.TotalPages.Should().Be(5);
     }
+
+    [Fact]
+    public void TotalPages_Throws_WhenPageSizeIsZero()
+    {
+        var response = new PaginatedResponse<string>
+        {
+            Items = [],
+            Page = 1,
+            PageSize = 0,
+            TotalCount = 10
+        };
+
+        var act = () => response.TotalPages;
+
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithParameterName("PageSize");
+    }
 }

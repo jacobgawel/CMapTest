@@ -18,7 +18,7 @@ public class IndexModel(IProjectService projectService) : PageModel
 
     public async Task OnGetAsync()
     {
-        var result = await projectService.GetAllAsync(PageNumber, 20);
+        var result = await projectService.GetAllAsync(PageNumber, WebConstants.DefaultPageSize);
         if (result.IsSuccess)
             Projects = result.Value;
     }

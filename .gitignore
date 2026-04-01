@@ -11,3 +11,4 @@ riderModule.iml
 *.ncrunchproject
 *.ncrunchsolution
 .NCrunch*
+.claude

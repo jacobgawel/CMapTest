@@ -1,3 +1,5 @@
+using Humanizer;
+
 namespace CMapTest.Core.DTOs.Timesheet;
 
 public class TimesheetResponse
@@ -9,6 +11,6 @@ public class TimesheetResponse
     public string? Description { get; set; }
     public TimeOnly StartTime { get; set; }
     public TimeOnly EndTime { get; set; }
-    public decimal HoursWorked { get; set; }
-    public string Duration { get; set; } = string.Empty;
+    public decimal HoursWorked => (decimal)(EndTime - StartTime).TotalHours;
+    public string Duration => (EndTime - StartTime).Humanize();
 }

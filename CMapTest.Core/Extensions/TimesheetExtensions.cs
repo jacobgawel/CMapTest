@@ -1,6 +1,5 @@
 ﻿using CMapTest.Core.DTOs.Timesheet;
 using CMapTest.Core.Entities;
-using Humanizer;
 
 namespace CMapTest.Core.Extensions;
 
@@ -10,7 +9,6 @@ public static class TimesheetExtensions
     {
         public TimesheetResponse ToResponse()
         {
-            var duration = entity.EndTime - entity.StartTime;
             return new TimesheetResponse
             {
                 Id = entity.Id,
@@ -20,8 +18,6 @@ public static class TimesheetExtensions
                 Description = entity.Description,
                 StartTime = entity.StartTime,
                 EndTime = entity.EndTime,
-                HoursWorked = (decimal)duration.TotalHours,
-                Duration = duration.Humanize()
             };
         }
     }

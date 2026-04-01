@@ -47,7 +47,7 @@ public class IndexModel(
             endDate = Week.Value.AddDays(6);
         }
 
-        var result = await timesheetService.GetFilteredAsync(UserId, ProjectId, startDate, endDate, PageNumber, 10);
+        var result = await timesheetService.GetFilteredAsync(UserId, ProjectId, startDate, endDate, PageNumber, WebConstants.TimesheetPageSize);
         if (result.IsSuccess)
             Timesheets = result.Value;
 
@@ -61,13 +61,13 @@ public class IndexModel(
 
     private async Task LoadDropdownsAsync()
     {
-        var usersResult = await userService.GetAllAsync(1, 100);
+        var usersResult = await userService.GetAllAsync(1, WebConstants.DropdownMaxItems);
         if (usersResult.IsSuccess)
             UserOptions = usersResult.Value.Items
                 .Select(u => new SelectListItem(u.Name, u.Id.ToString()))
                 .ToList();
 
-        var projectsResult = await projectService.GetAllAsync(1, 100);
+        var projectsResult = await projectService.GetAllAsync(1, WebConstants.DropdownMaxItems);
         if (projectsResult.IsSuccess)
             ProjectOptions = projectsResult.Value.Items
                 .Select(p => new SelectListItem(p.Name, p.Id.ToString()))

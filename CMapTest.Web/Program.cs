@@ -14,6 +14,7 @@ builder.Host.UseSerilog((context, configuration) =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ITimesheetRepository, TimesheetRepository>();

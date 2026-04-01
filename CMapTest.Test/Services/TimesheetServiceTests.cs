@@ -14,10 +14,13 @@ public class TimesheetServiceTests
     private readonly Mock<ITimesheetRepository> _timesheetRepo = new();
     private readonly Mock<IUserRepository> _userRepo = new();
     private readonly Mock<IProjectRepository> _projectRepo = new();
+    private readonly Mock<TimeProvider> _timeProvider = new();
     private readonly TimesheetService _sut;
 
+    private static readonly DateTimeOffset FixedUtcNow = new(2025, 6, 15, 12, 0, 0, TimeSpan.Zero);
+
     // Valid defaults for a timesheet that passes all validation
-    private static readonly DateOnly ValidDate = DateOnly.FromDateTime(DateTime.UtcNow);
+    private static readonly DateOnly ValidDate = DateOnly.FromDateTime(FixedUtcNow.UtcDateTime);
     private static readonly TimeOnly ValidStartTime = new(9, 0);
     private static readonly TimeOnly ValidEndTime = new(17, 0);
     private const int ValidUserId = 1;
@@ -25,7 +28,8 @@ public class TimesheetServiceTests
 
     public TimesheetServiceTests()
     {
-        _sut = new TimesheetService(_timesheetRepo.Object, _userRepo.Object, _projectRepo.Object);
+        _timeProvider.Setup(tp => tp.GetUtcNow()).Returns(FixedUtcNow);
+        _sut = new TimesheetService(_timesheetRepo.Object, _userRepo.Object, _projectRepo.Object, _timeProvider.Object);
     }
 
     private void SetupValidationToPass()
@@ -288,7 +292,7 @@ public class TimesheetServiceTests
     public async Task CreateAsync_ReturnsValidationError_WhenDateIsInFuture()
     {
         var request = MakeValidCreateRequest();
-        request.Date = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(1);
+        request.Date = DateOnly.FromDateTime(FixedUtcNow.UtcDateTime).AddDays(1);
 
         var result = await _sut.CreateAsync(request);
 
@@ -441,7 +445,7 @@ public class TimesheetServiceTests
     public async Task UpdateAsync_ReturnsValidationError_WhenDateIsInFuture()
     {
         var request = MakeValidUpdateRequest();
-        request.Date = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(1);
+        request.Date = DateOnly.FromDateTime(FixedUtcNow.UtcDateTime).AddDays(1);
 
         var result = await _sut.UpdateAsync(1, request);
 
@@ -641,7 +645,7 @@ public class TimesheetServiceTests
         _timesheetRepo.Setup(r => r.CreateAsync(It.IsAny<TimesheetEntity>())).ReturnsAsync(created);
 
         var request = MakeValidCreateRequest();
-        request.Date = DateOnly.FromDateTime(DateTime.UtcNow);
+        request.Date = DateOnly.FromDateTime(FixedUtcNow.UtcDateTime);
 
         var result = await _sut.CreateAsync(request);
 
