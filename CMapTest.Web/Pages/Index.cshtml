@@ -1,0 +1,40 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <h1 class="display-4">CMapTest</h1>
+    <p class="lead">Timesheet Management System</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Users</h5>
+                <p class="card-text">Manage users in the system.</p>
+                <a asp-page="/Users/Index" class="btn btn-primary">View Users</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Projects</h5>
+                <p class="card-text">Manage projects in the system.</p>
+                <a asp-page="/Projects/Index" class="btn btn-primary">View Projects</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Timesheets</h5>
+                <p class="card-text">Manage timesheet entries.</p>
+                <a asp-page="/Timesheets/Index" class="btn btn-primary">View Timesheets</a>
+            </div>
+        </div>
+    </div>
+</div>

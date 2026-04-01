@@ -1,0 +1,119 @@
+@page
+@model CMapTest.Web.Pages.Timesheets.IndexModel
+@{
+    ViewData["Title"] = "Timesheets";
+}
+
+<h1>Timesheets</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
+</p>
+
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @Model.StatusMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<form method="get" class="row g-3 mb-3">
+    <div class="col-auto">
+        <select asp-for="UserId" asp-items="Model.UserOptions" class="form-select">
+            <option value="">All Users</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select asp-for="ProjectId" asp-items="Model.ProjectOptions" class="form-select">
+            <option value="">All Projects</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select asp-for="Week" asp-items="Model.WeekOptions" class="form-select">
+            <option value="">All Weeks</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
+    </div>
+</form>
+
+@if (Model.ProjectHoursSummaries.Any())
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5 class="mb-0">Total Hours per Project</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Total Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var summary in Model.ProjectHoursSummaries)
+                    {
+                        <tr>
+                            <td>@summary.ProjectName</td>
+                            <td>@summary.TotalHours</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>User</th>
+            <th>Project</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Hours</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ts in Model.Timesheets!.Items)
+        {
+            <tr>
+                <td>@ts.Id</td>
+                <td>@ts.UserId</td>
+                <td>@ts.ProjectId</td>
+                <td>@ts.Date.ToString("yyyy-MM-dd")</td>
+                <td>@ts.Description</td>
+                <td>@ts.StartTime</td>
+                <td>@ts.EndTime</td>
+                <td>@ts.HoursWorked</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@ts.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-page="Delete" asp-route-id="@ts.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Timesheets!.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (var i = 1; i <= Model.Timesheets.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" asp-page="Index" asp-route-pageNumber="@i"
+                       asp-route-userId="@Model.UserId" asp-route-projectId="@Model.ProjectId"
+                       asp-route-week="@Model.Week?.ToString("yyyy-MM-dd")">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

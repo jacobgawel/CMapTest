@@ -1,0 +1,55 @@
+@page
+@model CMapTest.Web.Pages.Timesheets.CreateModel
+@{
+    ViewData["Title"] = "Create Timesheet Entry";
+}
+
+<h1>Create Timesheet Entry</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger">@Model.ErrorMessage</div>
+            }
+            <div class="mb-3">
+                <label asp-for="Input.UserId" class="form-label">User</label>
+                <select asp-for="Input.UserId" asp-items="Model.UserOptions" class="form-select">
+                    <option value="">-- Select User --</option>
+                </select>
+                <span asp-validation-for="Input.UserId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.ProjectId" class="form-label">Project</label>
+                <select asp-for="Input.ProjectId" asp-items="Model.ProjectOptions" class="form-select">
+                    <option value="">-- Select Project --</option>
+                </select>
+                <span asp-validation-for="Input.ProjectId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Date" class="form-label"></label>
+                <input asp-for="Input.Date" type="date" class="form-control" />
+                <span asp-validation-for="Input.Date" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Description" class="form-label"></label>
+                <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.StartTime" class="form-label"></label>
+                <input asp-for="Input.StartTime" type="time" class="form-control" />
+                <span asp-validation-for="Input.StartTime" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.EndTime" class="form-label"></label>
+                <input asp-for="Input.EndTime" type="time" class="form-control" />
+                <span asp-validation-for="Input.EndTime" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

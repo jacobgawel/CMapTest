@@ -1,0 +1,29 @@
+@page "{id:int}"
+@model CMapTest.Web.Pages.Timesheets.DeleteModel
+@{
+    ViewData["Title"] = "Delete Timesheet Entry";
+}
+
+<h1>Delete Timesheet Entry</h1>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete this timesheet entry?
+    <dl class="row mt-2 mb-0">
+        <dt class="col-sm-3">Date</dt>
+        <dd class="col-sm-9">@Model.Timesheet?.Date.ToString("yyyy-MM-dd")</dd>
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">@Model.Timesheet?.Description</dd>
+        <dt class="col-sm-3">Hours</dt>
+        <dd class="col-sm-9">@Model.Timesheet?.HoursWorked</dd>
+    </dl>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>
